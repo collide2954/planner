@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace app;
+namespace Application;
 
 public partial class MainWindow : Window
 {
