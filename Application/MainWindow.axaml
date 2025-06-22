@@ -12,11 +12,11 @@
     <Window.Styles>
         <Style Selector="ToolTip">
             <Setter Property="Background" Value="#232629"/>
-            <Setter Property="Foreground" Value="#26a269"/>
+            <Setter Property="Foreground" Value="#3584e4"/>
             <Setter Property="BorderBrush" Value="#4f5b62"/>
         </Style>
         <Style Selector="TextBox:pointerover /template/ TextBlock#PART_Watermark">
-            <Setter Property="Foreground" Value="#26a269"/>
+            <Setter Property="Foreground" Value="#3584e4"/>
             <Setter Property="Transitions">
                 <Transitions>
                     <BrushTransition Property="Foreground" Duration="0:0:0.2" Easing="CircularEaseOut"/>
@@ -32,11 +32,11 @@
         </Style>
         <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
             <Setter Property="Background" Value="#31363b"/>
-            <Setter Property="BorderBrush" Value="#26a269"/>
+            <Setter Property="BorderBrush" Value="#3584e4"/>
         </Style>
         <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
             <Setter Property="Background" Value="#31363b"/>
-            <Setter Property="BorderBrush" Value="#26a269"/>
+            <Setter Property="BorderBrush" Value="#3584e4"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
         <Style Selector="TextBox:pressed /template/ Border#PART_BorderElement">
