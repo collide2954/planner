@@ -1,9 +1,33 @@
-﻿var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+﻿using Serilog;
+using server.Logging;
 
-app.MapGet("/health", () => Results.Ok(new { status = "healthy" }));
+var builder = WebApplication.CreateBuilder(args);
 
-app.Urls.Clear();
-app.Urls.Add("http://localhost:8063");
+LoggingConfigurator.ConfigureLogger();
+builder.Host.UseCustomLogging();
 
-app.Run();
+try
+{
+    Log.Information("Starting Planner server");
+    
+    var app = builder.Build();
+
+    app.MapGet("/health", () => {
+        Log.Information("Health check received");
+        return Results.Ok(new { status = "healthy" });
+    });
+
+    app.Urls.Clear();
+    app.Urls.Add("http://localhost:8063");
+    Log.Information("Server configured to listen on port 8063");
+
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Server terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
