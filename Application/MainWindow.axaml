@@ -86,17 +86,28 @@
                     IsEnabled="False"/>
         </StackPanel>
         
-        <Border Grid.Row="1" Padding="12" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Panel Name="ServerStatus" 
-                   Width="28" Height="28" 
-                   ToolTip.Tip="Server Offline">
-                <TextBlock Text="x" 
-                          FontSize="28" 
-                          FontWeight="Bold"
-                          Foreground="#c01c28" 
-                          HorizontalAlignment="Center" 
-                          VerticalAlignment="Center"/>
-            </Panel>
-        </Border>
+        <Grid Grid.Row="1">
+            <Border Padding="12" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <TabControl Width="150" Background="Transparent">
+                    <TabItem Header="Login" FontSize="14" Foreground="#ECECEC">
+                    </TabItem>
+                    <TabItem Header="Register" FontSize="14" Foreground="#ECECEC">
+                    </TabItem>
+                </TabControl>
+            </Border>
+            
+            <Border Padding="12" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,10">
+                <Panel Name="ServerStatus" 
+                       Width="28" Height="28" 
+                       ToolTip.Tip="Server Offline">
+                    <TextBlock Text="x" 
+                              FontSize="28" 
+                              FontWeight="Bold"
+                              Foreground="#c01c28" 
+                              HorizontalAlignment="Center" 
+                              VerticalAlignment="Center"/>
+                </Panel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>
