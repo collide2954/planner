@@ -21,6 +21,7 @@ public partial class MainWindow : Window
     private Button? _loginButton;
     private Button? _registerButton;
     private TextBlock? _registerMessage;
+    private TextBlock? _loginMessage;
     private Grid? _loginForm;
     private Grid? _registerForm;
     private TabControl? _formTabs;
@@ -43,6 +44,7 @@ public partial class MainWindow : Window
         _loginButton = this.FindControl<Button>("LoginButton");
         _registerButton = this.FindControl<Button>("RegisterButton");
         _registerMessage = this.FindControl<TextBlock>("RegisterMessage");
+        _loginMessage = this.FindControl<TextBlock>("LoginMessage");
         _loginForm = this.FindControl<Grid>("LoginForm");
         _registerForm = this.FindControl<Grid>("RegisterForm");
         _formTabs = this.FindControl<TabControl>("FormTabs");
@@ -57,6 +59,12 @@ public partial class MainWindow : Window
         if (_registerButton != null)
         {
             _registerButton.Click += RegisterButton_Click;
+        }
+        
+        // Add event handler for login button
+        if (_loginButton != null)
+        {
+            _loginButton.Click += LoginButton_Click;
         }
 
         _healthCheckTimer.Start();
@@ -171,6 +179,90 @@ public partial class MainWindow : Window
         {
             _registerMessage.Text = message;
             _registerMessage.Foreground = new SolidColorBrush(Color.Parse(isSuccess ? "#26a269" : "#c01c28"));
+        }
+    }
+
+    private async void LoginButton_Click(object? sender, RoutedEventArgs e)
+    {
+        var usernameBox = this.FindControl<TextBox>("UsernameBox");
+        var passwordBox = this.FindControl<TextBox>("PasswordBox");
+
+        string username = usernameBox?.Text?.Trim() ?? string.Empty;
+        string password = passwordBox?.Text ?? string.Empty;
+
+        // Reset message
+        if (_loginMessage != null)
+        {
+            _loginMessage.Text = string.Empty;
+        }
+
+        // Validate inputs
+        if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+        {
+            ShowLoginMessage("Username and password are required", false);
+            return;
+        }
+
+        // Disable button during login attempt
+        if (_loginButton != null)
+        {
+            _loginButton.IsEnabled = false;
+        }
+
+        try
+        {
+            ShowLoginMessage("Logging in...", true);
+
+            var loginData = new
+            {
+                username,
+                password
+            };
+
+            var json = JsonSerializer.Serialize(loginData);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync("/auth/login", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                ShowLoginMessage("Login successful!", true);
+                
+                // TODO: Navigate to main application view or dashboard
+                // For now, just clear the form fields
+                if (usernameBox != null) usernameBox.Text = string.Empty;
+                if (passwordBox != null) passwordBox.Text = string.Empty;
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                ShowLoginMessage("Invalid username or password", false);
+            }
+            else
+            {
+                var responseText = await response.Content.ReadAsStringAsync();
+                ShowLoginMessage($"Login failed: {responseText}", false);
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowLoginMessage($"Error: {ex.Message}", false);
+        }
+        finally
+        {
+            // Re-enable button after login attempt
+            if (_loginButton != null)
+            {
+                _loginButton.IsEnabled = true;
+            }
+        }
+    }
+
+    private void ShowLoginMessage(string message, bool isSuccess)
+    {
+        if (_loginMessage != null)
+        {
+            _loginMessage.Text = message;
+            _loginMessage.Foreground = new SolidColorBrush(Color.Parse(isSuccess ? "#26a269" : "#c01c28"));
         }
     }
 

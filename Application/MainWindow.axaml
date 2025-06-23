@@ -97,6 +97,12 @@
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
                         IsEnabled="False"/>
+                    <TextBlock Name="LoginMessage" 
+                        Text="" 
+                        FontSize="14" 
+                        Foreground="#ECECEC" 
+                        HorizontalAlignment="Center"
+                        TextWrapping="Wrap"/>
                 </StackPanel>
             </Grid>
             
